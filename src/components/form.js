@@ -2,6 +2,7 @@ import React from 'react';
 import '../scss/form.scss';
 
 class Form extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -9,7 +10,6 @@ class Form extends React.Component {
       method: "get"
     }
   }
-
 
 
   handleChange = (e) => {
@@ -21,19 +21,21 @@ class Form extends React.Component {
   }
 
 
-  handleClick = (e) => {
+  handleClick = async (e) => {
     let words = this.state.words;
     this.setState({ words });
+
+    e.preventDefault();
+    let raw = await fetch(this.state.words);
+    let data = await raw.json();
+    let count = data.count;
+    // count, people : share this data
+    this.props.handler(count, data.results);
   }
 
-  handleCheckChange = (event) => {
-    let method = event.target.value;
-    this.setState({ method })
-  }
 
-  
   handleCheck = (event) => {
-    let method = this.state.method;
+    let method = event.target.value;
     this.setState({ method })
   }
 
@@ -51,19 +53,19 @@ class Form extends React.Component {
           </div>
           <div>
             <label> GET
-          <input type="radio" checked={this.handleCheck} onChange={this.handleCheckChange} name="method" id="method" value="GET" />
+          <input type="radio" onChange={this.handleCheck} name="method" id="method" value="GET" />
             </label>
 
             <label> POST
-          <input type="radio" onChange={this.handleCheck} onChange={this.handleCheckChange} name="method" id="method" value="PUT" />
+          <input type="radio" onChange={this.handleCheck} name="method" id="method" value="PUT" />
             </label>
 
             <label> PUT
-          <input type="radio" onChange={this.handleCheck} onChange={this.handleCheckChange} name="method" id="method" value="POST" />
+          <input type="radio" onChange={this.handleCheck} name="method" id="method" value="POST" />
             </label>
 
             <label> DELETE
-          <input type="radio" onChange={this.handleCheck} onChange={this.handleCheckChange} name="method" id="method" value="delete" />
+          <input type="radio" onChange={this.handleCheck} name="method" id="method" value="delete" />
             </label>
           </div>
 
