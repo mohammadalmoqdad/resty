@@ -11,14 +11,14 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      count: 0,
+      headers: {},
       results: []
     }
   }
 
-  formHandler = (count, results) => {
+  formHandler = (headers, results) => {
     // when it is called in the form it wil set the
-    this.setState({ count, results })
+    this.setState({ headers, results })
   }
 
   render() {
@@ -26,7 +26,7 @@ class App extends React.Component {
       <div className="App">
         <Header />
         <Form handler={this.formHandler} />
-        <Result data={this.state.results} count={this.state.count} />
+        <Result data={this.state.results} headers={this.state.headers} />
         <Footer />
       </div>
     );

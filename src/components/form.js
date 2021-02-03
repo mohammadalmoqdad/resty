@@ -1,36 +1,38 @@
 import React from 'react';
 import '../scss/form.scss';
-
+import superagent from "superagent";
 class Form extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      words: 'this is default',
-      method: "get"
+      url: 'this is default',
+      method: "",
+      body: ""
     }
   }
 
 
   handleChange = (e) => {
-    let words = e.target.value;
-    // update this.state.words with new words
+    let url = e.target.value;
+    // update this.state.url with new url
     // this.state is immutable (you can not change it directly)
-    this.setState({ words });
+    this.setState({ url });
 
   }
 
 
   handleClick = async (e) => {
-    let words = this.state.words;
-    this.setState({ words });
-
     e.preventDefault();
-    let raw = await fetch(this.state.words);
-    let data = await raw.json();
-    let count = data.count;
+    let url = this.state.url;
+    this.setState({ url });
+
+    let raw = await superagent(this.state.url).set(JSON.parse(this.state.body));
+    let body = raw.body
+    let headers = raw.headers
     // count, people : share this data
-    this.props.handler(count, data.results);
+    this.props.handler(headers, body);
+
   }
 
 
@@ -40,7 +42,13 @@ class Form extends React.Component {
   }
 
 
+  bodyHandler = (event) => {
+    let body = event.target.value;
+    this.setState({ body })
 
+  }
+
+ 
   render() {
     return (
       <div className="form-div">
@@ -68,9 +76,9 @@ class Form extends React.Component {
           <input type="radio" onChange={this.handleCheck} name="method" id="method" value="delete" />
             </label>
           </div>
-
+          <input type="text" id="body" name="body" placeholder="BODY" onChange={this.bodyHandler} />
         </form>
-        <section className="result-section">{this.state.method} {this.state.words}</section>
+        <section className="result-section">{this.state.method} {this.state.url}</section>
       </div>
     )
   }
