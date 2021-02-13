@@ -6,9 +6,10 @@ class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      url: 'this is default',
+      url: "",
       method: "",
-      body: ""
+      body: "",
+      operations: [] //to store the URL && method for sidebar
     }
   }
 
@@ -32,7 +33,8 @@ class Form extends React.Component {
     let headers = raw.headers
     // count, people : share this data
     this.props.handler(headers, body);
-
+    this.storeToLocal();
+    this.props.operationsHandler(this.state.operations)
   }
 
 
@@ -48,7 +50,24 @@ class Form extends React.Component {
 
   }
 
- 
+
+
+  storeToLocal() {
+    let operations = [];
+    let storage = JSON.parse(localStorage.getItem("operation"))
+    if (storage) {
+      console.log(storage)
+      storage.forEach(element => {
+        operations.push(element)
+      });
+    }
+    let newElement = { url: this.state.url, method: this.state.method, body: this.state.body }
+    operations.push(newElement)
+    this.setState({ operations })
+    localStorage.setItem("operation", JSON.stringify(this.state.operations))
+  }
+
+
   render() {
     return (
       <div className="form-div">
@@ -64,11 +83,11 @@ class Form extends React.Component {
           <input type="radio" onChange={this.handleCheck} name="method" id="method" value="GET" />
             </label>
 
-            <label> POST
+            <label> PUT
           <input type="radio" onChange={this.handleCheck} name="method" id="method" value="PUT" />
             </label>
 
-            <label> PUT
+            <label> POST
           <input type="radio" onChange={this.handleCheck} name="method" id="method" value="POST" />
             </label>
 

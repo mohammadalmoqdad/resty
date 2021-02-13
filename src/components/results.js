@@ -1,6 +1,6 @@
 import "../scss/result.scss";
 function Results(props) {
-    console.log("prooops headers", props.headers)
+    
     return (
         <div id="result">
 
