@@ -1,10 +1,26 @@
 .App {
-  text-align: center;
+  display: flex;
+  justify-content: left;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.main-content {
+  text-align: center;
+  min-width: 80%;
+  &:first-child{
+    order: 2;
+  }
+  &:nth-child(2){
+    order: 1;
+  }
+}
+
+.left-side-bar {
+max-width: fit-content;
 }
 
 @media (prefers-reduced-motion: no-preference) {
